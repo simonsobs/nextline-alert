@@ -1,0 +1,11 @@
+# Default settings
+#
+# Syntax can be learned from Dynaconf examples 
+# https://github.com/rochacbruno/learndynaconf/tree/main/configs
+
+[alert]
+campana_url = "http://httpbin.org/post"
+
+[logging.loggers.nextline_alert]
+handlers = ["default"]
+level = "DEBUG"
