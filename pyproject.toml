@@ -37,6 +37,9 @@ Documentation = "https://github.com/simonsobs/nextline-alert#readme"
 Issues = "https://github.com/simonsobs/nextline-alert/issues"
 Source = "https://github.com/simonsobs/nextline-alert"
 
+[project.entry-points."nextline_graphql"]
+alert = "nextline_alert:Plugin"
+
 [tool.hatch.version]
 source = "regex_commit"
 path = "src/nextline_alert/__about__.py"
