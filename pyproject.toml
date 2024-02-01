@@ -21,7 +21,7 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
 ]
-dependencies = ["requests>=2.31"]
+dependencies = ["httpx>=0.26"]
 dynamic = ["version"]
 
 [project.optional-dependencies]
@@ -30,6 +30,7 @@ tests = [
   "pytest-cov>=4.1",
   "pytest-timeout>=2.2",
   "pytest>=7.4",
+  "pytest-httpx>=0.29",
 ]
 
 [project.urls]
