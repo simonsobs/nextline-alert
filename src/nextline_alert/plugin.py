@@ -16,7 +16,10 @@ assert DEFAULT_CONFIG_PATH.is_file()
 
 PRELOAD = (str(DEFAULT_CONFIG_PATH),)
 SETTINGS = ()
-VALIDATORS = (Validator("ALERT.CAMPANA_URL", must_exist=True, is_type_of=str),)
+VALIDATORS = (
+    Validator('ALERT.CAMPANA_URL', must_exist=True, is_type_of=str),
+    Validator('ALERT.PLATFORM', must_exist=True, is_type_of=str),
+)
 
 
 class Plugin:
@@ -35,10 +38,12 @@ class Plugin:
     @spec.hookimpl
     def configure(self, settings: Dynaconf):
         self._url = settings.alert.campana_url
+        self._platform = settings.alert.platform
 
     @spec.hookimpl
     @asynccontextmanager
     async def lifespan(self, context: Mapping):
+        self._emitter = Emitter(url=self._url, platform=self._platform)
         nextline = cast(Nextline, context['nextline'])
-        nextline.register(Emitter(url=self._url))
+        nextline.register(self._emitter)
         yield
