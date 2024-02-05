@@ -5,6 +5,7 @@
 
 [alert]
 campana_url = "http://httpbin.org/post"
+platform = 'localhost'
 
 [logging.loggers.nextline_alert]
 handlers = ["default"]

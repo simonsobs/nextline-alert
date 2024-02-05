@@ -6,10 +6,12 @@ from nextline.plugin.spec import Context, hookimpl
 
 
 class Emitter:
-    def __init__(self, url: str):
+    def __init__(self, url: str, platform: str):
         self._url = url
+        self._platform = platform
         self._logger = getLogger(__name__)
         self._logger.info(f'Campana endpoint: {url}')
+        self._logger.debug(f'Platform: {platform!r}')
 
     @hookimpl
     async def on_end_run(self, context: Context) -> None:
@@ -20,20 +22,21 @@ class Emitter:
             alertname = f'Run {run_no_str} failed'
             desc = ''.join(traceback.format_exception(type(e), e, e.__traceback__))
             self._logger.info(f"Emitting alert: '{alertname}'")
+            labels = {'alertname': alertname, 'platform': self._platform}
             try:
-                await emit(self._url, alertname, desc)
+                await emit(url=self._url, labels=labels, description=desc)
             except BaseException:
                 self._logger.exception(f"Failed to emit alert: '{alertname}'")
                 self._logger.debug(f'Alert description: {desc!r}')
 
 
-async def emit(url: str, alertname: str, description: str) -> None:
+async def emit(url: str, labels: dict[str, str], description: str) -> None:
     data = {
         'status': 'firing',
         'alerts': [
             {
                 'status': 'firing',
-                'labels': {'alertname': alertname},
+                'labels': labels,
                 'annotations': {'description': description, 'groups': 'nextline'},
             }
         ],

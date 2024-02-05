@@ -27,6 +27,7 @@ pip install nextline-alert
 | Environment variable          | Default value             | Description          |
 | ----------------------------- | ------------------------- | -------------------- |
 | `NEXTLINE_ALERT__CAMPANA_URL` | `http://httpbin.org/post` | The CAMPANA endpoint |
+| `NEXTLINE_ALERT__PLATFORM`    | `localhost`               | The platform name    |
 
 ## License
 
