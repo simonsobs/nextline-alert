@@ -1,4 +1,5 @@
 from collections.abc import Mapping
+from logging import getLogger
 from pathlib import Path
 from typing import Optional, cast
 
@@ -7,6 +8,7 @@ from dynaconf import Dynaconf, Validator
 from nextline import Nextline
 from nextlinegraphql.hook import spec
 
+from .__about__ import __version__
 from .emitter import Emitter
 from .schema import Mutation, Query, Subscription
 
@@ -38,6 +40,8 @@ class Plugin:
 
     @spec.hookimpl
     def configure(self, settings: Dynaconf):
+        logger = getLogger(__name__)
+        logger.info(f'{__package__} version: {__version__}')
         url = settings.alert.campana_url
         platform = settings.alert.platform
         self._emitter = Emitter(url=url, platform=platform)
