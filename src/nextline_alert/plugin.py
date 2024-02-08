@@ -38,8 +38,9 @@ class Plugin:
 
     @spec.hookimpl
     def configure(self, settings: Dynaconf):
-        self._url = settings.alert.campana_url
-        self._platform = settings.alert.platform
+        url = settings.alert.campana_url
+        platform = settings.alert.platform
+        self._emitter = Emitter(url=url, platform=platform)
 
     @spec.hookimpl
     def schema(self) -> tuple[type, type | None, type | None]:
@@ -48,7 +49,6 @@ class Plugin:
     @spec.hookimpl
     @asynccontextmanager
     async def lifespan(self, context: Mapping):
-        self._emitter = Emitter(url=self._url, platform=self._platform)
         nextline = cast(Nextline, context['nextline'])
         nextline.register(self._emitter)
         yield
