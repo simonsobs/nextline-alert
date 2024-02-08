@@ -1,4 +1,5 @@
 from collections.abc import Mapping
+from logging import getLogger
 from pathlib import Path
 from typing import Optional, cast
 
@@ -7,7 +8,9 @@ from dynaconf import Dynaconf, Validator
 from nextline import Nextline
 from nextlinegraphql.hook import spec
 
+from .__about__ import __version__
 from .emitter import Emitter
+from .schema import Mutation, Query, Subscription
 
 HERE = Path(__file__).resolve().parent
 DEFAULT_CONFIG_PATH = HERE / 'default.toml'
@@ -37,13 +40,19 @@ class Plugin:
 
     @spec.hookimpl
     def configure(self, settings: Dynaconf):
-        self._url = settings.alert.campana_url
-        self._platform = settings.alert.platform
+        logger = getLogger(__name__)
+        logger.info(f'{__package__} version: {__version__}')
+        url = settings.alert.campana_url
+        platform = settings.alert.platform
+        self._emitter = Emitter(url=url, platform=platform)
+
+    @spec.hookimpl
+    def schema(self) -> tuple[type, type | None, type | None]:
+        return (Query, Mutation, Subscription)
 
     @spec.hookimpl
     @asynccontextmanager
     async def lifespan(self, context: Mapping):
-        self._emitter = Emitter(url=self._url, platform=self._platform)
         nextline = cast(Nextline, context['nextline'])
         nextline.register(self._emitter)
         yield
