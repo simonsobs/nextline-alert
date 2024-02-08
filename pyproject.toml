@@ -46,6 +46,14 @@ source = "regex_commit"
 path = "src/nextline_alert/__about__.py"
 tag_sign = false
 
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+timeout = 60
+addopts = "--doctest-modules"
+# doctest_optionflags = ["ELLIPSIS", "NORMALIZE_WHITESPACE",]
+doctest_optionflags = ["ELLIPSIS"]
+norecursedirs = "build"
+
 [tool.black]
 skip-string-normalization = true
 target_version = ['py310', 'py311', 'py312']
