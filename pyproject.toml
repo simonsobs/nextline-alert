@@ -21,7 +21,7 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
 ]
-dependencies = ["httpx>=0.26"]
+dependencies = ["nextline-graphql>=0.7.3", "httpx>=0.26"]
 dynamic = ["version"]
 
 [project.optional-dependencies]
