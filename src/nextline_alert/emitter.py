@@ -1,4 +1,3 @@
-import traceback
 from logging import getLogger
 
 import httpx
@@ -17,17 +16,16 @@ class Emitter:
     async def on_end_run(self, context: Context) -> None:
         run_arg = context.run_arg
         nextline = context.nextline
-        if e := nextline.exception():
+        if fmt_exc := nextline.format_exception():
             run_no_str = 'unknown' if run_arg is None else f'{run_arg.run_no}'
             alertname = f'Run {run_no_str} failed'
-            desc = ''.join(traceback.format_exception(type(e), e, e.__traceback__))
             self._logger.info(f"Emitting alert: '{alertname}'")
             labels = {'alertname': alertname, 'platform': self._platform}
             try:
-                await emit(url=self._url, labels=labels, description=desc)
+                await emit(url=self._url, labels=labels, description=fmt_exc)
             except BaseException:
                 self._logger.exception(f"Failed to emit alert: '{alertname}'")
-                self._logger.debug(f'Alert description: {desc!r}')
+                self._logger.debug(f'Alert description: {fmt_exc!r}')
 
 
 async def emit(url: str, labels: dict[str, str], description: str) -> None:
