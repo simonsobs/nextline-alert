@@ -12,7 +12,7 @@ def func_success():
     time.sleep(0.001)
 
 
-def func_rase():
+def func_raise():
     time.sleep(0.001)
     raise ValueError('test')
 
@@ -40,7 +40,7 @@ async def test_emit_no_alert() -> None:
 
 @respx.mock
 async def test_emit_alert() -> None:
-    nextline = Nextline(func_rase)
+    nextline = Nextline(func_raise)
 
     url = 'http://localhost:5000/alerts'
     platform = 'pytest'
