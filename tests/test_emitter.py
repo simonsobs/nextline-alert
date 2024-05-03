@@ -2,6 +2,7 @@ import asyncio
 import json
 import time
 
+import pytest
 import respx
 from nextline import Nextline
 
@@ -12,14 +13,20 @@ def func_success():
     time.sleep(0.001)
 
 
+def func_raise_ignore():
+    time.sleep(0.001)
+    raise KeyboardInterrupt
+
+
 def func_raise():
     time.sleep(0.001)
     raise ValueError('test')
 
 
 @respx.mock
-async def test_emit_no_alert() -> None:
-    nextline = Nextline(func_success)
+@pytest.mark.parametrize('func', [func_success, func_raise_ignore])
+async def test_emit_no_alert(func) -> None:
+    nextline = Nextline(func)
 
     url = 'http://localhost:5000/alerts'
     platform = 'pytest'
