@@ -1,4 +1,4 @@
-# Nextline Alert
+# nextline-alert
 
 [![PyPI - Version](https://img.shields.io/pypi/v/nextline-alert.svg)](https://pypi.org/project/nextline-alert)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/nextline-alert.svg)](https://pypi.org/project/nextline-alert)
@@ -9,7 +9,6 @@
 
 A plugin for [nextline-graphql](https://github.com/simonsobs/nextline-graphql).
 Emit alerts to [Campana](https://github.com/simonsobs/campana)
-
 
 ## Installation
 
