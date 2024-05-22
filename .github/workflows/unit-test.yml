@@ -41,8 +41,18 @@ jobs:
 
       - name: Run tests
         run: pytest -vv --cov --cov-report=xml
+      
+      - name: Check Codecov token
+        id: check_codecov
+        run: |
+          if [ -n "${{ secrets.CODECOV_TOKEN }}" ]; then
+            echo "::set-output name=exists::true"
+          else
+            echo "::set-output name=exists::false"
+          fi
 
       - name: Upload coverage to Codecov
+        if: steps.check_codecov.outputs.exists == 'true'
         uses: codecov/codecov-action@v4
         with:
           fail_ci_if_error: true
