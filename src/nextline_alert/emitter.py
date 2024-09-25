@@ -1,6 +1,7 @@
 from logging import getLogger
 
 import httpx
+
 from nextline.plugin.spec import Context, hookimpl
 
 
