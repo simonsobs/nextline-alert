@@ -9,16 +9,16 @@ from nextline import Nextline
 from nextline_alert.emitter import Emitter
 
 
-def func_success():
+def func_success():  # pragma: no cover
     time.sleep(0.001)
 
 
-def func_raise_ignore():
+def func_raise_ignore():  # pragma: no cover
     time.sleep(0.001)
     raise KeyboardInterrupt
 
 
-def func_raise():
+def func_raise():  # pragma: no cover
     time.sleep(0.001)
     raise ValueError('test')
 
