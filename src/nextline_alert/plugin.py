@@ -1,9 +1,9 @@
 from collections.abc import Mapping
+from contextlib import asynccontextmanager
 from logging import getLogger
 from pathlib import Path
 from typing import Optional, cast
 
-from apluggy import asynccontextmanager
 from dynaconf import Dynaconf, Validator
 
 from nextline import Nextline
