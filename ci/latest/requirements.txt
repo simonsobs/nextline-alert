@@ -5,6 +5,6 @@ nextline-graphql==0.7.11
 httpx==0.28.1
 pytest-asyncio==0.26.0
 pytest-cov==6.1.1
-pytest-timeout==2.3.1
+pytest-timeout==2.4.0
 pytest==8.3.5
 respx==0.22.0
