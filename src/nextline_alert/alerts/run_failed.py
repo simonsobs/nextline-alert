@@ -57,7 +57,15 @@ class AlertRunFailed:
 
 
 async def emit(url: str, labels: dict[str, str], description: str) -> None:
-    data = {
+    data = compose_data(labels, description)
+
+    async with httpx.AsyncClient() as client:
+        response = await client.post(url, json=data)
+        response.raise_for_status()
+
+
+def compose_data(labels: dict[str, str], description: str):
+    return {
         'status': 'firing',
         'alerts': [
             {
@@ -67,7 +75,3 @@ async def emit(url: str, labels: dict[str, str], description: str) -> None:
             }
         ],
     }
-
-    async with httpx.AsyncClient() as client:
-        response = await client.post(url, json=data)
-        response.raise_for_status()
