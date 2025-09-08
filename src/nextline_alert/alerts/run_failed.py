@@ -13,11 +13,7 @@ class AlertRunFailed:
 
     def __init__(self, url: str, platform: str):
         self._emitter = Emitter(url, platform)
-        self._url = url
-        self._platform = platform
         self._logger = getLogger(__name__)
-        # self._logger.info(f'Campana endpoint: {url}')
-        # self._logger.debug(f'Platform: {platform!r}')
 
     @hookimpl
     async def on_end_run(self, context: Context) -> None:
@@ -43,18 +39,12 @@ class AlertRunFailed:
 
     async def _emit(self, context: Context) -> None:
         nextline = context.nextline
-        fmt_exc = nextline.format_exception()
-        assert fmt_exc
+        description = nextline.format_exception()
+        assert description
         run_arg = context.run_arg
         run_no_str = 'unknown' if run_arg is None else f'{run_arg.run_no}'
         alertname = f'Run {run_no_str} failed'
-        self._logger.info(f"Emitting alert: '{alertname}'")
-        labels = {'alertname': alertname, 'platform': self._platform}
-        try:
-            await self._emitter.emit(url=self._url, labels=labels, description=fmt_exc)
-        except BaseException:
-            self._logger.exception(f"Failed to emit alert: '{alertname}'")
-            self._logger.debug(f'Alert description: {fmt_exc!r}')
+        await self._emitter.emit(alertname=alertname, description=description)
 
 
 class Emitter:
@@ -65,21 +55,25 @@ class Emitter:
         self._logger.info(f'Campana endpoint: {url}')
         self._logger.debug(f'Platform: {platform!r}')
 
-    async def emit(self, url: str, labels: dict[str, str], description: str) -> None:
-        data = self.compose_data(labels, description)
+    async def emit(self, alertname: str, description: str) -> None:
+        data = self.compose_data(alertname, description)
 
-        async with httpx.AsyncClient() as client:
-            response = await client.post(url, json=data)
-            response.raise_for_status()
+        self._logger.info(f"Emitting alert: '{alertname}'")
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.post(self._url, json=data)
+                response.raise_for_status()
+        except BaseException:
+            self._logger.exception(f"Failed to emit alert: '{alertname}'")
+            self._logger.debug(f'Alert description: {description!r}')
 
-
-    def compose_data(self, labels: dict[str, str], description: str):
+    def compose_data(self, alertname: str, description: str):
         return {
             'status': 'firing',
             'alerts': [
                 {
                     'status': 'firing',
-                    'labels': labels,
+                    'labels': {'alertname': alertname, 'platform': self._platform},
                     'annotations': {'description': description, 'groups': 'nextline'},
                 }
             ],
