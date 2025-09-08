@@ -12,11 +12,12 @@ class AlertRunFailed:
     '''
 
     def __init__(self, url: str, platform: str):
+        self._emitter = Emitter(url, platform)
         self._url = url
         self._platform = platform
         self._logger = getLogger(__name__)
-        self._logger.info(f'Campana endpoint: {url}')
-        self._logger.debug(f'Platform: {platform!r}')
+        # self._logger.info(f'Campana endpoint: {url}')
+        # self._logger.debug(f'Platform: {platform!r}')
 
     @hookimpl
     async def on_end_run(self, context: Context) -> None:
@@ -50,28 +51,36 @@ class AlertRunFailed:
         self._logger.info(f"Emitting alert: '{alertname}'")
         labels = {'alertname': alertname, 'platform': self._platform}
         try:
-            await emit(url=self._url, labels=labels, description=fmt_exc)
+            await self._emitter.emit(url=self._url, labels=labels, description=fmt_exc)
         except BaseException:
             self._logger.exception(f"Failed to emit alert: '{alertname}'")
             self._logger.debug(f'Alert description: {fmt_exc!r}')
 
 
-async def emit(url: str, labels: dict[str, str], description: str) -> None:
-    data = compose_data(labels, description)
+class Emitter:
+    def __init__(self, url: str, platform: str):
+        self._url = url
+        self._platform = platform
+        self._logger = getLogger(__name__)
+        self._logger.info(f'Campana endpoint: {url}')
+        self._logger.debug(f'Platform: {platform!r}')
 
-    async with httpx.AsyncClient() as client:
-        response = await client.post(url, json=data)
-        response.raise_for_status()
+    async def emit(self, url: str, labels: dict[str, str], description: str) -> None:
+        data = self.compose_data(labels, description)
+
+        async with httpx.AsyncClient() as client:
+            response = await client.post(url, json=data)
+            response.raise_for_status()
 
 
-def compose_data(labels: dict[str, str], description: str):
-    return {
-        'status': 'firing',
-        'alerts': [
-            {
-                'status': 'firing',
-                'labels': labels,
-                'annotations': {'description': description, 'groups': 'nextline'},
-            }
-        ],
-    }
+    def compose_data(self, labels: dict[str, str], description: str):
+        return {
+            'status': 'firing',
+            'alerts': [
+                {
+                    'status': 'firing',
+                    'labels': labels,
+                    'annotations': {'description': description, 'groups': 'nextline'},
+                }
+            ],
+        }
