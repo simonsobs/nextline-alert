@@ -43,6 +43,7 @@ class AlertRunFailed:
     async def _emit(self, context: Context) -> None:
         nextline = context.nextline
         fmt_exc = nextline.format_exception()
+        assert fmt_exc
         run_arg = context.run_arg
         run_no_str = 'unknown' if run_arg is None else f'{run_arg.run_no}'
         alertname = f'Run {run_no_str} failed'
