@@ -9,8 +9,8 @@ from dynaconf import Dynaconf, Validator
 from nextline import Nextline
 from nextlinegraphql.hook import spec
 
+from . import alerts
 from .__about__ import __version__
-from .emitter import Emitter
 from .schema import Mutation, Query, Subscription
 
 HERE = Path(__file__).resolve().parent
@@ -43,9 +43,8 @@ class Plugin:
     def configure(self, settings: Dynaconf):
         logger = getLogger(__name__)
         logger.info(f'{__package__} version: {__version__}')
-        url = settings.alert.campana_url
-        platform = settings.alert.platform
-        self._emitter = Emitter(url=url, platform=platform)
+        self._url = settings.alert.campana_url
+        self._platform = settings.alert.platform
 
     @spec.hookimpl
     def schema(self) -> tuple[type, type | None, type | None]:
@@ -55,5 +54,5 @@ class Plugin:
     @asynccontextmanager
     async def lifespan(self, context: Mapping):
         nextline = cast(Nextline, context['nextline'])
-        nextline.register(self._emitter)
+        alerts.register(nextline=nextline, url=self._url, platform=self._platform)
         yield
