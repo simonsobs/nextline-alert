@@ -8,6 +8,7 @@ import respx
 
 from nextline import Nextline
 from nextline_alert.alerts import AlertRunFailed
+from nextline_alert.emitter import Emitter
 
 
 def func_success():  # pragma: no cover
@@ -94,7 +95,7 @@ async def test_emit_exception(caplog: pytest.LogCaptureFixture) -> None:
             await nextline.run_continue_and_wait(event)
 
     # Assert the log message
-    records = [r for r in caplog.records if r.name == AlertRunFailed.__module__]
+    records = [r for r in caplog.records if r.name == Emitter.__module__]
     assert len(records) == 1
     assert records[0].levelname == 'ERROR'
     assert 'Failed to emit alert' in records[0].message
