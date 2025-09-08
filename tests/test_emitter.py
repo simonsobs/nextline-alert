@@ -7,7 +7,7 @@ import pytest
 import respx
 
 from nextline import Nextline
-from nextline_alert.emitter import Emitter
+from nextline_alert.emitter import AlertRunFailed
 
 
 def func_success():  # pragma: no cover
@@ -31,7 +31,7 @@ async def test_emit_no_alert(func) -> None:
 
     url = 'http://localhost:5000/alerts'
     platform = 'pytest'
-    emitter = Emitter(url=url, platform=platform)
+    emitter = AlertRunFailed(url=url, platform=platform)
     assert nextline.register(emitter)
 
     # Mock the HTTP POST request
@@ -52,7 +52,7 @@ async def test_emit_alert() -> None:
 
     url = 'http://localhost:5000/alerts'
     platform = 'pytest'
-    emitter = Emitter(url=url, platform=platform)
+    emitter = AlertRunFailed(url=url, platform=platform)
     assert nextline.register(emitter)
 
     # Mock the HTTP POST request
@@ -81,7 +81,7 @@ async def test_emit_exception(caplog: pytest.LogCaptureFixture) -> None:
 
     url = 'http://localhost:5000/alerts'
     platform = 'pytest'
-    emitter = Emitter(url=url, platform=platform)
+    emitter = AlertRunFailed(url=url, platform=platform)
     assert nextline.register(emitter)
 
     # Mock the HTTP POST request
@@ -94,7 +94,7 @@ async def test_emit_exception(caplog: pytest.LogCaptureFixture) -> None:
             await nextline.run_continue_and_wait(event)
 
     # Assert the log message
-    records = [r for r in caplog.records if r.name == Emitter.__module__]
+    records = [r for r in caplog.records if r.name == AlertRunFailed.__module__]
     assert len(records) == 1
     assert records[0].levelname == 'ERROR'
     assert 'Failed to emit alert' in records[0].message

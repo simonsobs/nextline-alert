@@ -5,7 +5,12 @@ import httpx
 from nextline.plugin.spec import Context, hookimpl
 
 
-class Emitter:
+class AlertRunFailed:
+    '''A plugin of Nextline.
+
+    The name of this class appears as the plugin name in the log.
+    '''
+
     def __init__(self, url: str, platform: str):
         self._url = url
         self._platform = platform

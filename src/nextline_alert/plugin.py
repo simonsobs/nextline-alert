@@ -10,7 +10,7 @@ from nextline import Nextline
 from nextlinegraphql.hook import spec
 
 from .__about__ import __version__
-from .emitter import Emitter
+from .emitter import AlertRunFailed
 from .schema import Mutation, Query, Subscription
 
 HERE = Path(__file__).resolve().parent
@@ -45,7 +45,7 @@ class Plugin:
         logger.info(f'{__package__} version: {__version__}')
         url = settings.alert.campana_url
         platform = settings.alert.platform
-        self._emitter = Emitter(url=url, platform=platform)
+        self._emitter = AlertRunFailed(url=url, platform=platform)
 
     @spec.hookimpl
     def schema(self) -> tuple[type, type | None, type | None]:
