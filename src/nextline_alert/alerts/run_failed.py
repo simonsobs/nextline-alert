@@ -20,7 +20,9 @@ class AlertRunFailed:
         if not self._is_to_emit(context):
             return
 
-        await self._emit(context)
+        alertname = self._compose_alertname(context)
+        description = self._compose_description(context)
+        await self._emitter.emit(alertname=alertname, description=description)
 
     def _is_to_emit(self, context: Context) -> bool:
         nextline = context.nextline
@@ -37,14 +39,13 @@ class AlertRunFailed:
             return False
         return True
 
-    async def _emit(self, context: Context) -> None:
-        nextline = context.nextline
-        description = nextline.format_exception()
-        assert description
+    def _compose_alertname(self, context: Context) -> str:
         run_arg = context.run_arg
         run_no_str = 'unknown' if run_arg is None else f'{run_arg.run_no}'
-        alertname = f'Run {run_no_str} failed'
-        await self._emitter.emit(alertname=alertname, description=description)
+        return f'Run {run_no_str} failed'
+
+    def _compose_description(self, context: Context) -> str:
+        return context.nextline.format_exception() or ''
 
 
 class Emitter:
