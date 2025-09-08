@@ -10,3 +10,4 @@ pytest-timeout==2.2.0
 pytest==8.2.0
 hypothesis==6.130.0
 respx==0.20.1
+deepdiff==7.0.0

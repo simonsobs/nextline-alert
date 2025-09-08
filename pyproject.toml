@@ -33,6 +33,7 @@ tests = [
   "pytest>=7.4",
   "hypothesis>=6.130",
   "respx>=0.20.1",
+  "deepdiff>=7.0",
 ]
 
 [project.urls]
