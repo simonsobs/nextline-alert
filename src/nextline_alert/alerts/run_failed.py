@@ -12,7 +12,7 @@ class AlertRunFailed:
     '''
 
     def __init__(self, url: str, platform: str):
-        self._emitter = Emitter(url, platform)
+        self._emit = Emitter(url, platform)
         self._logger = getLogger(__name__)
 
     @hookimpl
@@ -22,7 +22,7 @@ class AlertRunFailed:
 
         alertname = self._compose_alertname(context)
         description = self._compose_description(context)
-        await self._emitter.emit(alertname=alertname, description=description)
+        await self._emit(alertname=alertname, description=description)
 
     def _is_to_emit(self, context: Context) -> bool:
         nextline = context.nextline
@@ -56,7 +56,7 @@ class Emitter:
         self._logger.info(f'Campana endpoint: {url}')
         self._logger.debug(f'Platform: {platform!r}')
 
-    async def emit(self, alertname: str, description: str) -> None:
+    async def __call__(self, alertname: str, description: str) -> None:
         data = self.compose_data(alertname, description)
 
         self._logger.info(f"Emitting alert: '{alertname}'")
