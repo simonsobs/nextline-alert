@@ -7,7 +7,7 @@ import pytest
 import respx
 
 from nextline import Nextline
-from nextline_alert.emitter import AlertRunFailed
+from nextline_alert.alerts import AlertRunFailed
 
 
 def func_success():  # pragma: no cover

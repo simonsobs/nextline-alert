@@ -10,7 +10,7 @@ from nextline import Nextline
 from nextlinegraphql.hook import spec
 
 from .__about__ import __version__
-from .emitter import AlertRunFailed
+from .alerts import AlertRunFailed
 from .schema import Mutation, Query, Subscription
 
 HERE = Path(__file__).resolve().parent
