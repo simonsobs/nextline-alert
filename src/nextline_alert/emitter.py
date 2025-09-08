@@ -15,10 +15,16 @@ class Emitter:
 
     @hookimpl
     async def on_end_run(self, context: Context) -> None:
-        nextline = context.nextline
-
-        if not (fmt_exc := nextline.format_exception()):
+        if not self._is_to_emit(context):
             return
+
+        await self._emit(context)
+
+    def _is_to_emit(self, context: Context) -> bool:
+        nextline = context.nextline
+        fmt_exc = nextline.format_exception()
+        if not fmt_exc:
+            return False
 
         # TODO: Quick implementation to ignore KeyboardInterrupt
         #       Instead of parsing fmt_exc, store the exception type as string
@@ -26,8 +32,12 @@ class Emitter:
         #       https://github.com/simonsobs/nextline/blob/v0.7.4/nextline/spawned/types.py#L35-L58
         if fmt_exc.rstrip().endswith('KeyboardInterrupt'):
             self._logger.info('Ignoring KeyboardInterrupt')
-            return
+            return False
+        return True
 
+    async def _emit(self, context: Context) -> None:
+        nextline = context.nextline
+        fmt_exc = nextline.format_exception()
         run_arg = context.run_arg
         run_no_str = 'unknown' if run_arg is None else f'{run_arg.run_no}'
         alertname = f'Run {run_no_str} failed'
