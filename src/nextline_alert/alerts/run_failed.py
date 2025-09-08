@@ -10,8 +10,8 @@ class AlertRunFailed:
     The name of this class appears as the plugin name in the log.
     '''
 
-    def __init__(self, url: str, platform: str):
-        self._emit = Emitter(url, platform)
+    def __init__(self, emit: Emitter):
+        self._emit = emit
         self._logger = getLogger(__name__)
 
     @hookimpl

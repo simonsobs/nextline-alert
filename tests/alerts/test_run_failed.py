@@ -32,8 +32,9 @@ async def test_emit_no_alert(func) -> None:
 
     url = 'http://localhost:5000/alerts'
     platform = 'pytest'
-    emitter = AlertRunFailed(url=url, platform=platform)
-    assert nextline.register(emitter)
+    emit = Emitter(url=url, platform=platform)
+    alert = AlertRunFailed(emit=emit)
+    assert nextline.register(alert)
 
     # Mock the HTTP POST request
     route = respx.post(url).respond(status_code=200)
@@ -53,8 +54,9 @@ async def test_emit_alert() -> None:
 
     url = 'http://localhost:5000/alerts'
     platform = 'pytest'
-    emitter = AlertRunFailed(url=url, platform=platform)
-    assert nextline.register(emitter)
+    emit = Emitter(url=url, platform=platform)
+    alert = AlertRunFailed(emit=emit)
+    assert nextline.register(alert)
 
     # Mock the HTTP POST request
     route = respx.post(url).respond(status_code=200)
@@ -82,8 +84,9 @@ async def test_emit_exception(caplog: pytest.LogCaptureFixture) -> None:
 
     url = 'http://localhost:5000/alerts'
     platform = 'pytest'
-    emitter = AlertRunFailed(url=url, platform=platform)
-    assert nextline.register(emitter)
+    emit = Emitter(url=url, platform=platform)
+    alert = AlertRunFailed(emit=emit)
+    assert nextline.register(alert)
 
     # Mock the HTTP POST request
     route = respx.post(url).respond(status_code=500)
