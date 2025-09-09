@@ -24,6 +24,7 @@ SETTINGS = ()
 VALIDATORS = (
     Validator('ALERT.CAMPANA_URL', must_exist=True, is_type_of=str),
     Validator('ALERT.PLATFORM', must_exist=True, is_type_of=str),
+    Validator('ALERT.IDLE_TIMEOUT_MINUTES', must_exist=True, is_type_of=float),
 )
 
 
