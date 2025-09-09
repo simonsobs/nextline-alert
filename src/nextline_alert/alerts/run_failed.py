@@ -1,7 +1,8 @@
 from logging import getLogger
 
 from nextline.plugin.spec import Context, hookimpl
-from nextline_alert.emitter import Emitter
+
+from .types import EmitFunc
 
 
 class AlertRunFailed:
@@ -10,7 +11,7 @@ class AlertRunFailed:
     The name of this class appears as the plugin name in the log.
     '''
 
-    def __init__(self, emit: Emitter):
+    def __init__(self, emit: EmitFunc):
         self._emit = emit
         self._logger = getLogger(__name__)
 
