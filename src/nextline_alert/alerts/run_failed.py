@@ -13,7 +13,6 @@ class AlertRunFailed:
 
     def __init__(self, emit: EmitFunc):
         self._emit = emit
-        self._logger = getLogger(__name__)
 
     @hookimpl
     async def on_end_run(self, context: Context) -> None:
@@ -35,7 +34,8 @@ class AlertRunFailed:
         #       in RunResult in the spawned process.
         #       https://github.com/simonsobs/nextline/blob/v0.7.4/nextline/spawned/types.py#L35-L58
         if fmt_exc.rstrip().endswith('KeyboardInterrupt'):
-            self._logger.info('Ignoring KeyboardInterrupt')
+            logger = getLogger(__name__)
+            logger.info('Ignoring KeyboardInterrupt')
             return False
         return True
 
