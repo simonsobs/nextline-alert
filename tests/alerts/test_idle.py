@@ -82,6 +82,7 @@ async def test_property(mock_sleep: AsyncMock, data: st.DataObject) -> None:
     mock_sleep.reset_mock()  # As Hypothesis tests multiple times
 
     emit = MockEmit()
+    repr(emit)  # For coverage of __repr__
 
     timeout_minutes = data.draw(st.floats(min_value=1))
     timeout = timeout_minutes * 60
