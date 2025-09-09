@@ -47,6 +47,7 @@ class Plugin:
         logger.info(f'{__package__} version: {__version__}')
         url = settings.alert.campana_url
         platform = settings.alert.platform
+        self._idle_timeout_minutes = settings.alert.idle_timeout_minutes
         self._emit = Emitter(url=url, platform=platform)
 
     @spec.hookimpl
@@ -57,5 +58,9 @@ class Plugin:
     @asynccontextmanager
     async def lifespan(self, context: Mapping):
         nextline = cast(Nextline, context['nextline'])
-        alerts.register(nextline=nextline, emit=self._emit)
+        alerts.register(
+            nextline=nextline,
+            emit=self._emit,
+            idle_timeout_minutes=self._idle_timeout_minutes,
+        )
         yield
