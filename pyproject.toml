@@ -97,7 +97,13 @@ nextline_alert = ["src/nextline_alert", "*/nextline-alert/src/nextline_alert"]
 tests = ["tests", "*/nextline-alert/tests"]
 
 [tool.coverage.report]
-exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
+exclude_lines = [
+  "pragma: no cover",
+  'if __name__ == "__main__":',
+  "if TYPE_CHECKING:",
+  "\\.\\.\\.$",
+]
+
 
 [tool.isort]
 profile = "black"
