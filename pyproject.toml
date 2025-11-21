@@ -24,7 +24,7 @@ classifiers = [
 keywords = ["nextline", "plugin", "graphql", "alert", "campana"]
 dependencies = ["nextline-graphql>=0.7.8", "httpx>=0.26"]
 
-[project.optional-dependencies]
+[dependency-groups]
 tests = [
   "pytest-asyncio>=0.23",
   "pytest-cov>=4.1",
@@ -34,6 +34,7 @@ tests = [
   "respx>=0.20.1",
   "deepdiff>=7.0",
 ]
+type-check = ["mypy>=1.0"]
 
 [project.urls]
 Documentation = "https://github.com/simonsobs/nextline-alert#readme"
@@ -46,6 +47,7 @@ alert = "nextline_alert:Plugin"
 [tool.hatch.version]
 source = "regex_commit"
 path = "src/nextline_alert/__about__.py"
+check_dirty = false
 tag_sign = false
 
 [tool.pytest.ini_options]
