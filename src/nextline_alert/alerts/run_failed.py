@@ -32,7 +32,7 @@ class AlertRunFailed:
         # TODO: Quick implementation to ignore KeyboardInterrupt
         #       Instead of parsing fmt_exc, store the exception type as string
         #       in RunResult in the spawned process.
-        #       https://github.com/simonsobs/nextline/blob/v0.7.4/nextline/spawned/types.py#L35-L58
+        #       https://github.com/nextline-dev/nextline/blob/v0.7.4/nextline/spawned/types.py#L35-L58
         if fmt_exc.rstrip().endswith('KeyboardInterrupt'):
             logger = getLogger(__name__)
             logger.info('Ignoring KeyboardInterrupt')

@@ -7,7 +7,7 @@
 [![Test Status](https://github.com/simonsobs/nextline-alert/actions/workflows/type-check.yml/badge.svg)](https://github.com/simonsobs/nextline-alert/actions/workflows/type-check.yml)
 [![codecov](https://codecov.io/gh/simonsobs/nextline-alert/branch/main/graph/badge.svg)](https://codecov.io/gh/simonsobs/nextline-alert)
 
-A plugin for [nextline-graphql](https://github.com/simonsobs/nextline-graphql).
+A plugin for [nextline-graphql](https://github.com/nextline-dev/nextline-graphql).
 Emit alerts to [Campana](https://github.com/simonsobs/campana)
 
 ## Installation
