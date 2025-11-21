@@ -11,7 +11,7 @@ updates:
 
   # For `.github/deps/latest/requirements.txt`, used in GitHub Actions
   - package-ecosystem: "pip"
-    directory: "/ci/latest"
+    directory: "/.github/deps/latest"
     schedule:
       interval: "daily"
 
