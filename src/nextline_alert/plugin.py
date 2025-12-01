@@ -7,7 +7,7 @@ from typing import Optional, cast
 from dynaconf import Dynaconf, Validator
 
 from nextline import Nextline
-from nextlinegraphql.hook import spec
+from nextline_graphql.hook import spec
 
 from . import alerts
 from .__about__ import __version__

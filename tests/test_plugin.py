@@ -4,8 +4,8 @@ from collections.abc import AsyncIterator
 import pytest
 
 from nextline_alert.graphql import QUERY_VERSION
-from nextlinegraphql import create_app
-from nextlinegraphql.plugins.graphql.test import TestClient, gql_request
+from nextline_graphql import create_app
+from nextline_graphql.plugins.graphql.test import TestClient, gql_request
 
 
 @pytest.fixture
