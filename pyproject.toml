@@ -86,7 +86,7 @@ ignore = [
 max-complexity = 20
 
 [tool.ruff.lint.isort]
-known-first-party = ["nextline", "nextlinegraphql"]
+known-first-party = ["nextline", "nextline_graphql"]
 
 [tool.coverage.run]
 source_pkgs = ["nextline_alert", "tests"]
