@@ -35,7 +35,7 @@ tests = [
   "respx>=0.22.0",
   "deepdiff>=7.0",
 ]
-type-check = ["mypy<1.19"]  # 1.19 incompatible with strawberry-graphql 0.287.0
+type-check = ["mypy<1.20"]  # 1.19 incompatible with strawberry-graphql 0.287.0
 
 [project.urls]
 Documentation = "https://github.com/simonsobs/nextline-alert#readme"
